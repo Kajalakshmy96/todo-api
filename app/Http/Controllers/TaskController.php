@@ -123,6 +123,27 @@ class TaskController extends Controller
         //return $this->handleResponse(Controller::RESPONSE_PROCESSING_ERROR_RETURN_CODE, array(), $data['response']['error']['message']);
     }
 
+    public function updateState(Request $request)
+    {
+        $task = Task::find($request->id);
+
+        if (!empty($task)) {
+            $task->state = $request->state;
+            $task->state_updated_at = ApplicationDateTime::now();
+            $task->save();
+
+            return $this->handleResponse(Controller::RESPONSE_SUCCESS_RETURN_CODE, array(
+                "updated" => true,
+                "id" => $task->id,
+                "task" => $task
+            ));
+        } else {
+            return $this->handleResponse(Controller::RESPONSE_BAD_REQUEST_RETURN_CODE, array(), "Unable to find the task to update!");
+        }
+
+        //return $this->handleResponse(Controller::RESPONSE_PROCESSING_ERROR_RETURN_CODE, array(), $data['response']['error']['message']);
+    }
+
     public function deleteTask(Request $request)
     {
         $task = Task::find($request->id);

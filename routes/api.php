@@ -33,6 +33,7 @@ Route::group([
     'middleware' => 'auth:api'
 ], function () {
 
+    //Task
     Route::group([
         'prefix' => 'task'
     ], function () {
@@ -41,5 +42,13 @@ Route::group([
         Route::post('create', 'TaskController@createTask');
         Route::post('update/{id}', 'TaskController@updateTask');
         Route::post('delete/{id}', 'TaskController@deleteTask');
+        Route::post('state/{id}', 'TaskController@updateState');
+    });
+
+    //Summary
+    Route::group([
+        'prefix' => 'summary'
+    ], function () {
+        Route::post('', 'SummaryController@getSummary');
     });
 });

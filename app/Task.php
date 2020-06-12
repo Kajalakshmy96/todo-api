@@ -54,4 +54,41 @@ class Task extends Model
         //var_dump($tasksList);exit();
         return $tasksList;
     }
+
+    static function getSummary($userId, $timePeriod = "D")
+    {
+        $filter = "t.user_id = " . $userId;
+        if ($timePeriod == "D") {
+            $filter = ($filter != "" ? $filter . " and " : "") . "t.date = date(now())";
+        }
+        if ($timePeriod == "W") {
+            $filter = ($filter != "" ? $filter . " and " : "") . "t.date <= date(now()) and t.date >= date_sub(date(now()), interval 1 week)";
+        }
+        if ($timePeriod == "M") {
+            $filter = ($filter != "" ? $filter . " and " : "") . "t.date <= date(now()) and t.date >= date_sub(date(now()), interval 1 month)";
+        }
+
+        $sql = "select
+        sum(1) as total,
+        sum(if(t.state = 'C', 1, 0)) as completed,
+        sum(if(t.state = 'O', 1, 0)) as progress,
+        sum(if(t.state = 'E', 1, 0)) as uncompleted,
+        sum(if(t.state = 'P', 1, 0)) as partially,
+        sum(if(t.state = 'N', 1, 0)) as new
+        from task t
+        " . ($filter != "" ? "where " . $filter . " " : "") . "";
+
+        $tasksSummary = DB::select($sql);
+
+        // $tasksList = Task::query()
+        //     ->where('user_id', $userId)
+        //     ->where('status', Task::TASK_STATUS_ACTIVE)
+        //     ->orderBy('id', 'desc')
+        //     ->take($limit)->skip((($page - 1) * 10))
+        //     ->get();
+
+        //var_dump($tasksList);exit();
+        //echo json_encode($tasksSummary); exit();
+        return $tasksSummary;
+    }
 }
