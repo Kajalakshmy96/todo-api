@@ -37,11 +37,17 @@ Route::group([
     Route::group([
         'prefix' => 'task'
     ], function () {
+        // /api/v1/task/
         Route::post('', 'TaskController@getTasks');
+        // /api/v1/task/{id}
         Route::get('{id}', 'TaskController@getTask');
+        // /api/v1/task/create
         Route::post('create', 'TaskController@createTask');
+        // /api/v1/task/update/{id}
         Route::post('update/{id}', 'TaskController@updateTask');
+        // /api/v1/task/delete/{id}
         Route::post('delete/{id}', 'TaskController@deleteTask');
+        // /api/v1/task/state/{id}
         Route::post('state/{id}', 'TaskController@updateState');
     });
 
@@ -49,6 +55,7 @@ Route::group([
     Route::group([
         'prefix' => 'summary'
     ], function () {
+        // /api/v1/summary
         Route::post('', 'SummaryController@getSummary');
     });
 });

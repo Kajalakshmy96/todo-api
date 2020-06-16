@@ -108,7 +108,6 @@ class TaskController extends Controller
             $task->time = $request->time;
             $task->remind = $request->remind;
             $task->updated_at = ApplicationDateTime::now();
-            $task->created_at = ApplicationDateTime::now();
             $task->save();
 
             return $this->handleResponse(Controller::RESPONSE_SUCCESS_RETURN_CODE, array(
