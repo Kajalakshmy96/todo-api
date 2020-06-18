@@ -49,6 +49,7 @@ class TaskController extends Controller
                 "time" => $task['time'],
                 "remind" => $task['remind'],
                 "status" => $task['status'],
+                "state" => $task['state'],
                 "created_at" => $task['created_at']
             );
             return $this->handleResponse(Controller::RESPONSE_SUCCESS_RETURN_CODE, $taskObj);
